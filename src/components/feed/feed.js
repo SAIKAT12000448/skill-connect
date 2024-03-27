@@ -1,15 +1,17 @@
-import { render } from "@testing-library/react";
-import Post from "../post/post";
 import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
+import { render } from "@testing-library/react";
+import Post from "../post/post";
 import Spinner from "../spinner/spinner";
 
 class Feed extends React.Component {
   state = {
     tweets: [],
     loading: true,
+    error: false,
   };
+
   componentDidMount() {
     let url = "https://tweeter-8qqa.onrender.com/feed";
     axios({
@@ -21,9 +23,7 @@ class Feed extends React.Component {
       },
     })
       .then((res) =>
-        this.setState(() => {
-          return { tweets: res.data, loading: false };
-        })
+        this.setState({ tweets: res.data.slice(0, 30), loading: false })
       )
       .catch((err) => this.setState({ error: true, loading: false }));
   }
@@ -33,7 +33,7 @@ class Feed extends React.Component {
       <section>
         {this.state.error && (
           <p style={{ display: "flex", justifyContent: "center" }}>
-            Sorry, an error occured. Please try again.
+            Sorry, an error occurred. Please try again.
           </p>
         )}
         {this.state.tweets.map((post, index) => (

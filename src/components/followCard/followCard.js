@@ -24,12 +24,12 @@ const FollowCard = (props) => {
   }, []);
 
   return (
-    <section className="suggestedUsers">
+    <section style={{overflow:'scroll',marginBottom:'30px'}} className="suggestedUsers">
       <p>Who to follow</p>
       {users.map((user, index) => (
         <UserProfile
           username={user.username}
-          bio={user.bio}
+          bio='hey there i am using skill connect'
           userId={user._id.$oid}
           profile_image={user.profile_image}
           you_follow={user.you_follow}

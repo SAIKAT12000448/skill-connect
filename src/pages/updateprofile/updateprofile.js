@@ -12,7 +12,7 @@ class UpdateProfilePage extends React.Component {
     data: {
       profile_image: null,
       username: this.props.username,
-      bio: this.props.bio,
+      // bio: this.props.bio,
       email: this.props.email,
       phone: null,
     },
@@ -181,7 +181,7 @@ class UpdateProfilePage extends React.Component {
           <div className="editProfileDiv">
             <label>Bio</label>
             <input
-              placeholder={this.props.bio}
+              // placeholder={this.props.bio}
               name="bio"
               onChange={this.handleChange}
               maxLength="160"

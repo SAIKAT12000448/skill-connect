@@ -48,7 +48,7 @@ Skill Connect
         </div>
         <div className="profileDiv">
           <p>BIO</p>
-          <p>{props.bio}</p>
+          <p></p>
         </div>
         <div className="profileDiv">
           <p>PHONE</p>
