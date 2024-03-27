@@ -11,10 +11,11 @@ const Header = (props) => {
 
   return (
     <header className="header">
-      <Link to="/" className="homePage">
+      {/* <Link to="/" className="homePage">
         <img src={Tweeter} className="tweeter" />
         <img src={TweeterMobile} className="tweeterMobile" />
-      </Link>
+      </Link> */}
+      <h1 style={{color:'#2f80ed'}}>Skill Connect</h1>
       <nav className="navBar">
         <NavLink className="navLink" to="/">
           Home

@@ -11,9 +11,12 @@ const ProfilePage = (props) => {
   return (
     <div className="editProfile">
       <header className="profileHeader">
+        <div style={{fontSize:'30px',fontWeight:'700'}}>
         <Link to="/">
-          <img src={Tweeter} />
-        </Link>
+
+Skill Connect
+</Link>
+        </div>
         <div className="userProfile">
           <a
             className="userSummary"

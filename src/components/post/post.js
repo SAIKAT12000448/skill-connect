@@ -130,7 +130,7 @@ const Post = (props) => {
         >
           {props.comments} Comments
         </Link>
-        <a className="engagementLink">{retweets} Retweets</a>
+        <a className="engagementLink">{retweets} Reposts</a>
         <a className="engagementLink">{saves} Saved</a>
       </div>
       <div className="engageLinks">
@@ -146,7 +146,7 @@ const Post = (props) => {
           onClick={retweetPost}
         >
           <span className="material-icons-outlined engageLink">autorenew</span>
-          <span>{retweeted ? "Retweeted" : "Retweet"}</span>
+          <span>{retweeted ? "Reposted" : "Repost"}</span>
         </a>
         <a
           className="engageLink"
@@ -181,7 +181,7 @@ const Post = (props) => {
         >
           <input
             className="inputComment"
-            placeholder="Tweet your reply"
+            placeholder="Reply"
             onChange={handleComment}
             value={comment}
           />

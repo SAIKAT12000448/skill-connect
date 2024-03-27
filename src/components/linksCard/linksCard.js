@@ -13,10 +13,10 @@ const LinksCard = (props) => {
   return (
     <div className="linkCard">
       <NavLink className="link" to={`/profile/tweets/${userId}`}>
-        Tweets
+        Post
       </NavLink>
       <NavLink exact className="link" to={`/profile/retweets/${userId}`}>
-        Retweets
+        Repost
       </NavLink>
       <NavLink className="link" to={`/profile/media/${userId}`}>
         Media

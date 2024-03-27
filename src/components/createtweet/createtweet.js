@@ -99,13 +99,13 @@ class CreateTweet extends Component {
     return (
       <React.Fragment>
         {this.state.postedTweet === true ? (
-          <p className="tweetSuccess">Tweet posted successfully.</p>
+          <p className="tweetSuccess">posted successfully.</p>
         ) : null}
         {this.state.postedTweet === false ? (
           <p className="tweetFail">An error occured.</p>
         ) : null}
         <div className="createTweet">
-          <p>Tweet something</p>
+          <p>Post something</p>
           <div className="newtweetInput">
             <img className="posterImage" src={this.props.imageURL} />
             <div className="tweetbox">
@@ -154,7 +154,7 @@ class CreateTweet extends Component {
               ) : null}
             </div>
             <button id="tweetButton" onClick={this.postTweet}>
-              Tweet
+              Post
             </button>
           </div>
         </div>
