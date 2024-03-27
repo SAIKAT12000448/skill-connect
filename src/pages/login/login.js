@@ -49,7 +49,8 @@ class LoginPage extends React.Component {
         {this.props.loading ? <Loader /> : null}
         <div className="signupPage">
           <Link to="/">
-            <img src={Tweeter} className="tweeterHome" />
+            {/* <img src={Tweeter} className="tweeterHome" /> */}
+           <h1 style={{color:'#2f80ed'}}>Skill connect</h1>
           </Link>
           {errorMessage}
           <form onSubmit={this.submitHandler}>
@@ -70,7 +71,7 @@ class LoginPage extends React.Component {
               onMouseLeave={() => this.setState({ focus: { password: false } })}
               onChange={this.inputChangedHandler}
             />
-            <button>Start tweeting now</button>
+            <button>Login</button>
           </form>
           <p>
             Don't have an account yet? <Link to="/signup">Register</Link>

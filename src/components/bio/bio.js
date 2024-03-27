@@ -7,7 +7,7 @@ const Bio = (props) => {
     <div className="bioComponent">
       <img src={props.imageURL} />
       <p>{props.username}</p>
-      <p>{props.bio}</p>
+      <p>Hey there i am using skill connect!</p>
       <Link to={`/profile/tweets/${props.userId}`}>View full profile</Link>
     </div>
   );

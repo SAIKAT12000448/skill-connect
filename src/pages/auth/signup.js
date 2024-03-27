@@ -43,7 +43,9 @@ class SignupPage extends React.Component {
         {this.props.loading ? <Loader /> : null}
         <div className="signupPage">
           <Link to="/">
-            <img src={Tweeter} className="tweeterHome" />
+            {/* <img src={Tweeter} className="tweeterHome" /> */}
+           <h1 style={{color:'#2f80ed'}}>Skill connect</h1>
+
           </Link>
           <p>Join thousands of tweeps from around the world </p>
           <p>Happening now. Join Tweeter today.</p>
@@ -64,7 +66,7 @@ class SignupPage extends React.Component {
               placeholder="Password"
               onChange={this.inputChangedHandler}
             />
-            <button>Start tweeting now</button>
+            <button>Sign up</button>
           </form>
           <p>
             Already a member? <Link to="/login">Login</Link>
