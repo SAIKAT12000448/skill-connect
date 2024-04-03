@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import User from "./pages/User/User";
 import React from "react";
 import FullPostPage from "./pages/fullpostpage/fullpostpage";
+import Recomendation from "./components/container/Recomendation/Recomendation";
 
 const mapStateToProps = (state) => {
   return {
@@ -30,27 +31,39 @@ const Tweeter = (props) => {
     <Routes>
       <Route path="register" element={<Navigate to="/signup" />} />
       {
-        props.auth ? <Route path="signup" element={<Navigate to="/settings"/>} />
-        :
+        // props.auth ? <Route path="signup" element={<Navigate to="/settings"/>} />
+        // :
         <Route path="signup" element={<SignupPage />} />
 
       }
-      {props.auth ? (
+      {
+        <Route exact path="/" element={<HomePage />} />
+
+      }
+      {/* {props.auth ? (
         <Route exact path="/" element={<HomePage />} />
       ) : (
         <Route
           path="/"
           element={<Navigate to="/signin" state={{ from: location }} />}
         />
-      )}
-      {props.auth ? (
+      )} */}
+      {/* {props.auth ? (
         <Route path="/explore" element={<ExplorePage />} />
       ) : (
         <Route
           path="/explore"
           element={<Navigate to="/signin" state={{ from: location }} />}
         />
-      )}
+      )} */}
+      {
+        <Route path="/explore" element={<ExplorePage />} />
+
+      }
+      {
+        <Route path="/recomend" element={<Recomendation />} />
+
+      }
       {props.auth ? (
         <Route path="/bookmarks" element={<BookmarksPage />} />
       ) : (

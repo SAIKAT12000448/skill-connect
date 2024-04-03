@@ -14,12 +14,15 @@ class Feed extends React.Component {
 
   componentDidMount() {
     let url = "https://tweeter-8qqa.onrender.com/feed";
+    // console.log(this.props.token); 
+
     axios({
       method: "get",
       url: url,
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: this.props.token,
+        Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjYwZDhkMTdiZDQ0ZGQyODQ5NmQyMjZhIiwiZXhwIjoxNzEyMjA3NDg2LCJpYXQiOjE3MTIxNjQyODZ9.XJ1u-wRaGaa6-rmSyBJYf6mlN-kkmIXbvfEOy9KEv-U
+        `,
       },
     })
       .then((res) =>

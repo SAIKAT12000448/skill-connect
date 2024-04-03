@@ -40,7 +40,7 @@ const UserProfile = (props) => {
           {youfollow ? "Following" : "Follow"}
         </button>
       </div>
-      <p>{props.bio}</p>
+      <p>""</p>
     </section>
   );
 };
