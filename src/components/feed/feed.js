@@ -1,73 +1,57 @@
-import React from "react";
-import axios from "axios";
-import { connect } from "react-redux";
-import { render } from "@testing-library/react";
-import Post from "../post/post";
-import Spinner from "../spinner/spinner";
+import React, { useEffect, useState } from 'react';
+import './feed.css'
+const Feed = () => {
+  const [feed, setFeed] = useState([]);
+  const [commentText, setCommentText] = useState("");
 
-class Feed extends React.Component {
-  state = {
-    tweets: [],
-    loading: true,
-    error: false,
+  useEffect(() => {
+    fetch('http://localhost:5000/feed')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setFeed(data.data);
+      })
+  }, []);
+
+  const handleLike = (postId) => {
+    // Implement logic to like the post with postId
+    console.log('Liked post with ID:', postId);
   };
 
-  componentDidMount() {
-    let url = "https://tweeter-8qqa.onrender.com/feed";
-    // console.log(this.props.token); 
-
-    axios({
-      method: "get",
-      url: url,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjYwZDhkMTdiZDQ0ZGQyODQ5NmQyMjZhIiwiZXhwIjoxNzEyMjA3NDg2LCJpYXQiOjE3MTIxNjQyODZ9.XJ1u-wRaGaa6-rmSyBJYf6mlN-kkmIXbvfEOy9KEv-U
-        `,
-      },
-    })
-      .then((res) =>
-        this.setState({ tweets: res.data.slice(0, 30), loading: false })
-      )
-      .catch((err) => this.setState({ error: true, loading: false }));
-  }
-
-  render() {
-    return (
-      <section>
-        {this.state.error && (
-          <p style={{ display: "flex", justifyContent: "center" }}>
-            Sorry, an error occurred. Please try again.
-          </p>
-        )}
-        {this.state.tweets.map((post, index) => (
-          <Post
-            user={post.user}
-            caption={post.caption}
-            image={post.post_urls[0]}
-            comments={post.comments}
-            retweets={post.retweets}
-            datetime={post.createdAt}
-            post_id={post._id}
-            liked={post.liked}
-            likes={post.likes}
-            retweeted={post.retweeted}
-            saved={post.saved}
-            saves={post.bookmarks}
-            key={index}
-          />
-        ))}
-        {this.state.loading && <Spinner />}
-      </section>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    imageURL: state.imageURL,
-    username: state.username,
-    token: state.token,
+  const handleComment = (postId) => {
+    // Implement logic to add comment to the post with postId
+    console.log('Commented on post with ID:', postId, 'Comment:', commentText);
+    // Reset comment text area after posting comment
+    setCommentText("");
   };
+
+  return (
+    <div className="feed-container">
+      {feed.map(item => (
+        <div className="feed-item" key={item._id}>
+          <div className="feed-header">
+            {/* <img className="avatar" src={item.user.avatar} alt={item.user.name} /> */}
+            <div className="user-info">
+              {/* <h3 className="username">{item.user.name}</h3>
+              <p className="timestamp">{item.timestamp}</p> */}
+            </div>
+          </div>
+          <p className="caption">{item.caption}</p>
+          <img style={{width:'100%',height:'300px'}} className="post-image" src={item.image} alt={item.caption} />
+          <div style={{display:'flex',justifyContent:'space-around'}} className="interactions">
+            <button onClick={() => handleLike(item._id)}>Like</button>
+            <textarea
+              className="comment-textarea"
+              placeholder="Write a comment..."
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+            <button onClick={() => handleComment(item._id)}>comment</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
-export default connect(mapStateToProps, null)(Feed);
+export default Feed;

@@ -11,6 +11,8 @@ import User from "./pages/User/User";
 import React from "react";
 import FullPostPage from "./pages/fullpostpage/fullpostpage";
 import Recomendation from "./components/container/Recomendation/Recomendation";
+import Chat from "./Chatbot/Chat";
+import Join from "./Chatbot/Join";
 
 const mapStateToProps = (state) => {
   return {
@@ -29,41 +31,29 @@ const Tweeter = (props) => {
 
   return (
     <Routes>
-      <Route path="register" element={<Navigate to="/signup" />} />
-      {
-        // props.auth ? <Route path="signup" element={<Navigate to="/settings"/>} />
-        // :
         <Route path="signup" element={<SignupPage />} />
 
-      }
+      {/* <Route path="register" element={<Navigate to="/signup" />} />
       {
-        <Route exact path="/" element={<HomePage />} />
+        props.auth ? <Route path="signup" element={<Navigate to="/settings"/>} />
+        :
+        <Route path="signup" element={<SignupPage />} />
 
-      }
-      {/* {props.auth ? (
+      } */}
+      {/* {props.auth ? ( */}
         <Route exact path="/" element={<HomePage />} />
-      ) : (
-        <Route
-          path="/"
-          element={<Navigate to="/signin" state={{ from: location }} />}
-        />
-      )} */}
-      {/* {props.auth ? (
+        <Route path="/recomend" element= {<Recomendation/>} />
+        <Route path="/join" element={<Join/>}/>
+        <Route path="/chat" element={<Chat/>}/>
+
+      {props.auth ? (
         <Route path="/explore" element={<ExplorePage />} />
       ) : (
         <Route
           path="/explore"
           element={<Navigate to="/signin" state={{ from: location }} />}
         />
-      )} */}
-      {
-        <Route path="/explore" element={<ExplorePage />} />
-
-      }
-      {
-        <Route path="/recomend" element={<Recomendation />} />
-
-      }
+      )}
       {props.auth ? (
         <Route path="/bookmarks" element={<BookmarksPage />} />
       ) : (

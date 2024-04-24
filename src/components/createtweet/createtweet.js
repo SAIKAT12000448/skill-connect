@@ -1,194 +1,105 @@
-import React, { Component, useState } from "react";
-import "./createtweet.css";
-import * as actions from "../../store/action";
-import { connect } from "react-redux";
-import * as actionTypes from "../../store/actionTypes";
-import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-class CreateTweet extends Component {
-  state = {
-    showpermission: false,
-    tweet: {
-      caption: null,
-      file: null,
-    },
-    permission: 1,
-    tweetimageURL: null,
-    postedTweet: null,
-  };
-
-  setPermission = (value) => {
-    this.setState({ permission: value });
-  };
-
-  componentDidUpdate() {
-    if (this.props.postedTweet || !this.props.postedTweet) {
-      setTimeout(() => this.setState({ postedTweet: null }), 3000);
-    }
-  }
-
-  postTweet = (event) => {
-    const button = document.querySelector("#tweetButton");
-    button.disabled = true;
-    event.preventDefault();
-    const data = this.state.tweet;
-    const stateKeys = Object.keys(data);
-    const formData = new FormData();
-    stateKeys.map((key) => {
-      formData.append(key, data[key]);
+const CreateTweet = () => {
+    const [formData, setFormData] = useState({
+        caption: '',
+        image: null,
     });
-    let url = "https://tweeter-8qqa.onrender.com/posts/create";
-    axios({
-      method: "post",
-      url: url,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: this.props.token,
-      },
-    })
-      .then((res) => {
-        button.disabled = false;
-        this.props.navigate(`/${res.data.user.username}/${res.data.post_id}`);
-        this.setState({ postedTweet: true });
-      })
-      .catch((err) => {
-        this.setState({ postedTweet: false });
-        button.disabled = false;
-      });
-  };
+    const imgbbKey = "1a03298dd6a97dfcf880c2a6daaaea04";
 
-  setImage = () => {
-    const imageurl = URL.createObjectURL(this.state.tweet.file);
-    this.setState(() => {
-      return { tweetimageURL: imageurl };
-    });
-  };
+    const [imagePreview, setImagePreview] = useState(null);
+  
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
 
-  onImageChange = (event) => {
-    this.setState(() => {
-      return {
-        tweet: {
-          ...this.state.tweet,
-          file: event.target.files[0],
-        },
-      };
-    }, this.setImage);
-  };
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        setFormData({
+            ...formData,
+            image: file,
+        });
 
-  setpermission = () => {
-    this.setState({ showpermission: !this.state.showpermission });
-  };
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+    
+    const handlePostTweet = async (e) => {
+        e.preventDefault();
 
-  handleNewTweet = (event) => {
-    this.setState({
-      tweet: { ...this.state.tweet, caption: event.target.value },
-    });
-  };
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('caption', formData.caption);
 
-  handleKeyDown(e) {
-    e.target.style.height = "inherit";
-    e.target.style.height = `${e.target.scrollHeight}px`;
-    const limit = 100;
-    // In case you have a limitation
-    e.target.style.height = `${Math.max(e.target.scrollHeight, limit)}px`;
-  }
+            const image = formData.image;
+            const formDataImage = new FormData();
+            formDataImage.append('image', image);
+            const url = `https://api.imgbb.com/1/upload?key=${imgbbKey}`
+            fetch(url, {
+                method: 'POST',
+                body: formDataImage
+            })
+            .then(res=>res.json())
+            .then(imgData=>{
+              const feed = {
+                caption: formData.caption, 
+                image:imgData.data.url
+              }
+         if(imgData.success){
+            fetch('http://localhost:5000/tweets', {
+              method:'POST',
+              headers:{
+                "content-type":"application/json"
+              },
+              body:JSON.stringify(feed)
+            })
+            .then(res=>res.json())
+            .then(data=>{
+              setFormData({
+                caption: '',
+                image: null,
+              });
+            });
+          }
+        })
+      } catch (error) {
+          console.error('Error posting tweet:', error);
+      }
+    };
 
-  render() {
     return (
-      <React.Fragment>
-        {this.state.postedTweet === true ? (
-          <p className="tweetSuccess">posted successfully.</p>
-        ) : null}
-        {this.state.postedTweet === false ? (
-          <p className="tweetFail">An error occured.</p>
-        ) : null}
-        <div className="createTweet">
-          <p>Post something</p>
-          <div className="newtweetInput">
-            <img className="posterImage" src={this.props.imageURL} />
-            <div className="tweetbox">
-              <textarea
-                placeholder="What’s happening?"
-                className="tweetBox"
-                onChange={this.handleNewTweet}
-                onKeyDown={this.handleKeyDown}
-                maxLength="250"
-              />
-              <img src={this.state.tweetimageURL} width="100%" />
-            </div>
-          </div>
-          <div className="newtweetIcons">
-            <label htmlFor="file-input">
-              <i className="material-icons-outlined tweetImageIcon">image</i>
-            </label>
-            <input
-              type="file"
-              accept="image"
-              id="file-input"
-              name="image-upload"
-              onChange={this.onImageChange}
-            />
-            <div onClick={this.setpermission}>
-              <p>
-                <i className="material-icons-outlined">public</i>
-                {this.state.permission == 1
-                  ? "Everyone can reply"
-                  : "Only people you follow can reply"}
-              </p>
-              {this.state.showpermission ? (
-                <div className="replyPermission">
-                  <p>Who can reply?</p>
-                  <p>Choose who can reply to this Tweet.</p>
-                  <div>
-                    <a onClick={() => this.setPermission(1)}>
-                      <i className="material-icons-outlined">public</i>Everyone
-                    </a>
-                    <a onClick={() => this.setPermission(0)}>
-                      <i className="material-icons-outlined">group</i>People you
-                      follow
-                    </a>
-                  </div>
+        <div className="create-tweet-container">
+            <form onSubmit={handlePostTweet}>
+                <textarea
+                    placeholder="What’s happening?"
+                    name="caption"
+                    value={formData.caption}
+                    onChange={handleChange}
+                    maxLength="250"
+                    style={{width:'500px',height:'120px'}}
+                    className="tweet-textarea"
+                />
+                <div className="image-upload-container">
+                    <label htmlFor="image-upload" className="image-upload-label">
+                        <input type="file" id="image-upload" accept="image/*" onChange={handleImageUpload} />
+                        <span>Upload Image</span>
+                    </label>
+                    {imagePreview && <img src={imagePreview} alt=" Preview" className="image-preview" />}
                 </div>
-              ) : null}
-            </div>
-            <button id="tweetButton" onClick={this.postTweet}>
-              Post
-            </button>
-          </div>
+                <button type="submit" className="post-button">Post</button>
+            </form>
         </div>
-      </React.Fragment>
     );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    imageURL: state.imageURL,
-    error: state.error,
-    postedTweet: state.postedTweet,
-    token: state.token,
-  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSubmitTweet: (tweet) => dispatch(actions.postTweet(tweet)),
-    onResetPostedTweet: () =>
-      dispatch({ type: actionTypes.RESET_POSTED_TWEET }),
-  };
-};
-
-const withHooksHOC = (Component) => {
-  return (props) => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    return <Component navigate={navigate} location={location} {...props} />;
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withHooksHOC(CreateTweet));
+export default CreateTweet;

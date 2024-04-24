@@ -37,9 +37,13 @@ const Recomendation = () => {
                 {users.map(user => (  user.skills[0]===useSkill &&
                     <div key={user._id} className="user-card">
                         {/* Render user details */}
-                        <p>Name: {user.name}</p>
-                        <p>Email: {user.email}</p>
+                        <h4>Name: {user.name}</h4>
+                        {/* <p>Email: {user.email}</p>/ */}
                         <p>I am expertise in {user.skills[0]}</p>
+
+                        <button>
+                            Message
+                        </button>
                     </div>
                 ))}
             </div>

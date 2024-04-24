@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import "./header.css";
-import Tweeter from "../../Images/tweeter.svg";
-import TweeterMobile from "../../Images/tweeter-small.svg";
 import ProfileDropdown from "../profilebackdrop/profilebackdrop";
 import { Link, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 const Header = (props) => {
   const [showDropdown, setshowDropdown] = useState(false);
-
+  const email = localStorage.getItem('email');
   return (
     <header className="header">
       {/* <Link to="/" className="homePage">
@@ -28,6 +26,9 @@ const Header = (props) => {
         </NavLink>
         <NavLink className="navLink" to="/recomend">
           Recomendation
+        </NavLink>
+        <NavLink className="navLink" to={`/chat?name=${email}`}>
+          Chat
         </NavLink>
       </nav>
       <div className="userProfile">

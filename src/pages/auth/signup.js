@@ -55,6 +55,7 @@ const SignupPage = () => {
         console.log(formData);
         console.log('Form data successfully submitted:', data);
         localStorage.setItem('email',formData.email);
+        // const index = formData.skills.length -1 ;
         localStorage.setItem('skill',formData.skills[0])
         navigate('/');
       })
