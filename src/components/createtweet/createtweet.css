@@ -68,3 +68,6 @@
 #tweetButton:hover {
   background-color: #0d8ef6;
 }
+.post-button {
+  margin-right: 0;
+}

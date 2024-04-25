@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../header/header';
 import './Recomendation.css'; // Import CSS file for styling
+import { NavLink } from 'react-router-dom';
 
 const Recomendation = () => {
     const [users, setUsers] = useState([]);
@@ -41,8 +42,12 @@ const Recomendation = () => {
                         {/* <p>Email: {user.email}</p>/ */}
                         <p>I am expertise in {user.skills[0]}</p>
 
+
+                    
                         <button>
-                            Message
+                        <NavLink className="navLink" to={`/chat`}>
+                                       Message
+        </NavLink>
                         </button>
                     </div>
                 ))}

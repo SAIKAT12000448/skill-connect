@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import io from 'socket.io-client'
+import Header from '../components/header/header';
 
 // let socket;
 
@@ -14,8 +15,7 @@ const Chat = () => {
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        socket.emit('message',{messages,room});
-        socket.emit('messages',message);
+        socket.emit('message',{message,room});
         message("");
     }   
 
@@ -29,14 +29,13 @@ const Chat = () => {
           console.log("connected", socket.id);
         });
     
-        socket.on("personal-message", (data) => {
+        socket.on("receive-message", (data) => {
           console.log(data);
           setMessages((messages) => [...messages, data]);
         });
     
-        socket.on("message", (s) => {
+        socket.on("welcome", (s) => {
           console.log(s);
-        //   setMessage(s);
         });
     
         return () => {
@@ -62,28 +61,36 @@ const Chat = () => {
     
 
     return (
-        <div style={{width:'50%', textAlign:'center',marginLeft:'0',marginRight:'0'}}>
+       <div >
+
+        <Header></Header>
+         <div style={{width:'50%', textAlign:'center',marginLeft:'0',marginRight:'0', marginTop:'20px',display:'flex',justifyContent:'space-around'}}>
+            <div>
             <h1>Chat</h1>
 
+      <h4>Room Id</h4>        
+<h5>
+    
+    {
+        socketId
+    }
+</h5>
+<form onSubmit={handleSubmit} action="">
+<input
+value={message}
+onChange={(e)=>setMessage(e.target.value)}
+id='msg' type="text" placeholder='Enter Message' />    
 
-            <h5>
-                {
-                    // socketId
-                    
-                }
-            </h5>
-            <form onSubmit={handleSubmit} action="">
-            <input
-            value={message}
-            onChange={(e)=>setMessage(e.target.value)}
-            id='msg' type="text" placeholder='Enter Message' />    
+<input
+onChange={(e)=>setRoom(e.target.value)}
+value={room}
+id='msg' type="text" placeholder='Enter Room ID here' />            
+<button type='submit'>Send</button> 
+</form>
 
-            <input
-            onChange={(e)=>setRoom(e.target.value)}
-            value={room}
-            id='msg' type="text" placeholder='Enter Room' />            
-            <button type='submit'>Send</button> 
-            </form>
+            </div>
+            <div>
+            <h4 style={{marginBottom:'20px'}}>Message</h4>
            <p>
             {
                  messages.map((m, i) => (
@@ -93,7 +100,9 @@ const Chat = () => {
                   ))
             }
            </p>
+            </div>
         </div>
+       </div>
     );
 };
 

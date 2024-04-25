@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const CreateTweet = () => {
+    const person = localStorage.getItem('email');
+
     const [formData, setFormData] = useState({
+        person:person,
         caption: '',
         image: null,
     });
@@ -52,6 +55,7 @@ const CreateTweet = () => {
             .then(res=>res.json())
             .then(imgData=>{
               const feed = {
+                name:person,
                 caption: formData.caption, 
                 image:imgData.data.url
               }
@@ -69,6 +73,7 @@ const CreateTweet = () => {
                 caption: '',
                 image: null,
               });
+              window.location.reload();
             });
           }
         })
@@ -94,8 +99,10 @@ const CreateTweet = () => {
                         <input type="file" id="image-upload" accept="image/*" onChange={handleImageUpload} />
                         <span>Upload Image</span>
                     </label>
-                    {imagePreview && <img src={imagePreview} alt=" Preview" className="image-preview" />}
+                    {imagePreview && <img width='80%' height="330px" src={imagePreview} alt=" Preview" className="image-preview" />}
+
                 </div>
+
                 <button type="submit" className="post-button">Post</button>
             </form>
         </div>
